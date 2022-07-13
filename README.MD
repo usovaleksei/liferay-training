@@ -1,0 +1,1 @@
+![alt text](https://github.com/usovaleksei/liferay-training/blob/master/images/taskOneScreen.PNG)
