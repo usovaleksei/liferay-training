@@ -1,0 +1,10 @@
+Bundle-Name: library-api
+Bundle-SymbolicName: com.liferay.library.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.library.exception,\
+	com.liferay.library.model,\
+	com.liferay.library.service,\
+	com.liferay.library.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../library-service/service.xml
