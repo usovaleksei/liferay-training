@@ -14,9 +14,15 @@
 
 package com.liferay.library.service.base;
 
+import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.library.model.Book;
 import com.liferay.library.service.BookLocalService;
 import com.liferay.library.service.BookLocalServiceUtil;
+import com.liferay.library.service.persistence.AddressPersistence;
 import com.liferay.library.service.persistence.BookPersistence;
 import com.liferay.library.service.persistence.GenrePersistence;
 import com.liferay.library.service.persistence.StudentPersistence;
@@ -30,6 +36,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -243,6 +250,18 @@ public abstract class BookLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book, or <code>null</code> if a matching book could not be found
+	 */
+	@Override
+	public Book fetchBookByUuidAndGroupId(String uuid, long groupId) {
+		return bookPersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
 	 * Returns the book with the primary key.
 	 *
 	 * @param bookId the primary key of the book
@@ -294,6 +313,70 @@ public abstract class BookLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("bookId");
 	}
 
+	@Override
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		final PortletDataContext portletDataContext) {
+
+		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+			new ExportActionableDynamicQuery() {
+
+				@Override
+				public long performCount() throws PortalException {
+					ManifestSummary manifestSummary =
+						portletDataContext.getManifestSummary();
+
+					StagedModelType stagedModelType = getStagedModelType();
+
+					long modelAdditionCount = super.performCount();
+
+					manifestSummary.addModelAdditionCount(
+						stagedModelType, modelAdditionCount);
+
+					long modelDeletionCount =
+						ExportImportHelperUtil.getModelDeletionCount(
+							portletDataContext, stagedModelType);
+
+					manifestSummary.addModelDeletionCount(
+						stagedModelType, modelDeletionCount);
+
+					return modelAdditionCount;
+				}
+
+			};
+
+		initActionableDynamicQuery(exportActionableDynamicQuery);
+
+		exportActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
+
+				@Override
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					portletDataContext.addDateRangeCriteria(
+						dynamicQuery, "modifiedDate");
+				}
+
+			});
+
+		exportActionableDynamicQuery.setCompanyId(
+			portletDataContext.getCompanyId());
+
+		exportActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Book>() {
+
+				@Override
+				public void performAction(Book book) throws PortalException {
+					StagedModelDataHandlerUtil.exportStagedModel(
+						portletDataContext, book);
+				}
+
+			});
+		exportActionableDynamicQuery.setStagedModelType(
+			new StagedModelType(
+				PortalUtil.getClassNameId(Book.class.getName())));
+
+		return exportActionableDynamicQuery;
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -327,6 +410,52 @@ public abstract class BookLocalServiceBaseImpl
 		throws PortalException {
 
 		return bookPersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns all the books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @return the matching books, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Book> getBooksByUuidAndCompanyId(String uuid, long companyId) {
+		return bookPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of books
+	 * @param end the upper bound of the range of books (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching books, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Book> getBooksByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Book> orderByComparator) {
+
+		return bookPersistence.findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book
+	 * @throws PortalException if a matching book could not be found
+	 */
+	@Override
+	public Book getBookByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return bookPersistence.findByUUID_G(uuid, groupId);
 	}
 
 	/**
@@ -448,6 +577,9 @@ public abstract class BookLocalServiceBaseImpl
 			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
+
+	@Reference
+	protected AddressPersistence addressPersistence;
 
 	protected BookLocalService bookLocalService;
 

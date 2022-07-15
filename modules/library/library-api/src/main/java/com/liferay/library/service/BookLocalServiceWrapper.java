@@ -225,6 +225,20 @@ public class BookLocalServiceWrapper
 		return _bookLocalService.fetchBook(bookId);
 	}
 
+	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book, or <code>null</code> if a matching book could not be found
+	 */
+	@Override
+	public com.liferay.library.model.Book fetchBookByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return _bookLocalService.fetchBookByUuidAndGroupId(uuid, groupId);
+	}
+
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
@@ -247,6 +261,22 @@ public class BookLocalServiceWrapper
 	}
 
 	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book
+	 * @throws PortalException if a matching book could not be found
+	 */
+	@Override
+	public com.liferay.library.model.Book getBookByUuidAndGroupId(
+			String uuid, long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _bookLocalService.getBookByUuidAndGroupId(uuid, groupId);
+	}
+
+	/**
 	 * Returns a range of all the books.
 	 *
 	 * <p>
@@ -265,6 +295,41 @@ public class BookLocalServiceWrapper
 	}
 
 	/**
+	 * Returns all the books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @return the matching books, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.liferay.library.model.Book>
+		getBooksByUuidAndCompanyId(String uuid, long companyId) {
+
+		return _bookLocalService.getBooksByUuidAndCompanyId(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of books
+	 * @param end the upper bound of the range of books (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching books, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.liferay.library.model.Book>
+		getBooksByUuidAndCompanyId(
+			String uuid, long companyId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.library.model.Book> orderByComparator) {
+
+		return _bookLocalService.getBooksByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of books.
 	 *
 	 * @return the number of books
@@ -272,6 +337,16 @@ public class BookLocalServiceWrapper
 	@Override
 	public int getBooksCount() {
 		return _bookLocalService.getBooksCount();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return _bookLocalService.getExportActionableDynamicQuery(
+			portletDataContext);
 	}
 
 	@Override

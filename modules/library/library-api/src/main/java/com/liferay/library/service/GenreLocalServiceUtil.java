@@ -207,10 +207,29 @@ public class GenreLocalServiceUtil {
 		return getService().fetchGenre(genreId);
 	}
 
+	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre, or <code>null</code> if a matching genre could not be found
+	 */
+	public static Genre fetchGenreByUuidAndGroupId(String uuid, long groupId) {
+		return getService().fetchGenreByUuidAndGroupId(uuid, groupId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	/**
@@ -222,6 +241,20 @@ public class GenreLocalServiceUtil {
 	 */
 	public static Genre getGenre(long genreId) throws PortalException {
 		return getService().getGenre(genreId);
+	}
+
+	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre
+	 * @throws PortalException if a matching genre could not be found
+	 */
+	public static Genre getGenreByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return getService().getGenreByUuidAndGroupId(uuid, groupId);
 	}
 
 	/**
@@ -237,6 +270,37 @@ public class GenreLocalServiceUtil {
 	 */
 	public static List<Genre> getGenres(int start, int end) {
 		return getService().getGenres(start, end);
+	}
+
+	/**
+	 * Returns all the genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @return the matching genres, or an empty list if no matches were found
+	 */
+	public static List<Genre> getGenresByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return getService().getGenresByUuidAndCompanyId(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of genres
+	 * @param end the upper bound of the range of genres (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching genres, or an empty list if no matches were found
+	 */
+	public static List<Genre> getGenresByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Genre> orderByComparator) {
+
+		return getService().getGenresByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
 	}
 
 	/**

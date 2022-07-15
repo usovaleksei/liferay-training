@@ -10,11 +10,23 @@
 
 		<column name="bookId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
 
 		<column name="authorId" type="long" />
 		<column name="bookTitle" type="String" />
-		<column name="createDate" type="Date" />
+		<column name="publishingYear" type="Date" />
 		<column name="genreId" type="long" />
 		<column name="studentId" type="long" />
 
@@ -40,12 +52,24 @@
 
 		<column name="studentId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
 
 		<column name="name" type="String" />
 		<column name="surname" type="String" />
 		<column name="bornDate" type="Date" />
-		<column name="address" type="String" />
+		<column name="addressId" type="long" />
 
 		<!-- Order -->
 
@@ -61,6 +85,43 @@
 
 		<column name="genreId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
 		<column name="title" type="String" />
+	</entity>
+	<entity local-service="true" name="Address" remote-service="true" uuid="true">
+
+		<column name="addressId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="town" type="String" />
+		<column name="street" type="String" />
+		<column name="house" type="String" />
+		<column name="flat" type="String" />
 	</entity>
 </service-builder>

@@ -14,10 +14,12 @@
 
 package com.liferay.library.service;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.library.model.Genre;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -199,8 +201,22 @@ public interface GenreLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Genre fetchGenre(long genreId);
 
+	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre, or <code>null</code> if a matching genre could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Genre fetchGenreByUuidAndGroupId(String uuid, long groupId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
 
 	/**
 	 * Returns the genre with the primary key.
@@ -211,6 +227,18 @@ public interface GenreLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Genre getGenre(long genreId) throws PortalException;
+
+	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre
+	 * @throws PortalException if a matching genre could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Genre getGenreByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	/**
 	 * Returns a range of all the genres.
@@ -225,6 +253,31 @@ public interface GenreLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Genre> getGenres(int start, int end);
+
+	/**
+	 * Returns all the genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @return the matching genres, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Genre> getGenresByUuidAndCompanyId(String uuid, long companyId);
+
+	/**
+	 * Returns a range of genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of genres
+	 * @param end the upper bound of the range of genres (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching genres, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Genre> getGenresByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Genre> orderByComparator);
 
 	/**
 	 * Returns the number of genres.

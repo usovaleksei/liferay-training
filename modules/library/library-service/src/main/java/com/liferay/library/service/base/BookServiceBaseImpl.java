@@ -17,6 +17,7 @@ package com.liferay.library.service.base;
 import com.liferay.library.model.Book;
 import com.liferay.library.service.BookService;
 import com.liferay.library.service.BookServiceUtil;
+import com.liferay.library.service.persistence.AddressPersistence;
 import com.liferay.library.service.persistence.BookPersistence;
 import com.liferay.library.service.persistence.GenrePersistence;
 import com.liferay.library.service.persistence.StudentPersistence;
@@ -130,6 +131,9 @@ public abstract class BookServiceBaseImpl
 			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
+
+	@Reference
+	protected AddressPersistence addressPersistence;
 
 	@Reference
 	protected com.liferay.library.service.BookLocalService bookLocalService;

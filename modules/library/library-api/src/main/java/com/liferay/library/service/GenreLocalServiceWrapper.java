@@ -225,11 +225,35 @@ public class GenreLocalServiceWrapper
 		return _genreLocalService.fetchGenre(genreId);
 	}
 
+	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre, or <code>null</code> if a matching genre could not be found
+	 */
+	@Override
+	public com.liferay.library.model.Genre fetchGenreByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return _genreLocalService.fetchGenreByUuidAndGroupId(uuid, groupId);
+	}
+
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return _genreLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return _genreLocalService.getExportActionableDynamicQuery(
+			portletDataContext);
 	}
 
 	/**
@@ -244,6 +268,22 @@ public class GenreLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _genreLocalService.getGenre(genreId);
+	}
+
+	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre
+	 * @throws PortalException if a matching genre could not be found
+	 */
+	@Override
+	public com.liferay.library.model.Genre getGenreByUuidAndGroupId(
+			String uuid, long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _genreLocalService.getGenreByUuidAndGroupId(uuid, groupId);
 	}
 
 	/**
@@ -262,6 +302,41 @@ public class GenreLocalServiceWrapper
 		int start, int end) {
 
 		return _genreLocalService.getGenres(start, end);
+	}
+
+	/**
+	 * Returns all the genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @return the matching genres, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.liferay.library.model.Genre>
+		getGenresByUuidAndCompanyId(String uuid, long companyId) {
+
+		return _genreLocalService.getGenresByUuidAndCompanyId(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of genres
+	 * @param end the upper bound of the range of genres (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching genres, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.liferay.library.model.Genre>
+		getGenresByUuidAndCompanyId(
+			String uuid, long companyId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.library.model.Genre> orderByComparator) {
+
+		return _genreLocalService.getGenresByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
 	}
 
 	/**

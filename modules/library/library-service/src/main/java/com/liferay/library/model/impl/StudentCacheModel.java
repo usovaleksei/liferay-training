@@ -60,20 +60,32 @@ public class StudentCacheModel implements CacheModel<Student>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
 		sb.append(", studentId=");
 		sb.append(studentId);
+		sb.append(", groupId=");
+		sb.append(groupId);
+		sb.append(", companyId=");
+		sb.append(companyId);
+		sb.append(", userId=");
+		sb.append(userId);
+		sb.append(", userName=");
+		sb.append(userName);
+		sb.append(", createDate=");
+		sb.append(createDate);
+		sb.append(", modifiedDate=");
+		sb.append(modifiedDate);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", surname=");
 		sb.append(surname);
 		sb.append(", bornDate=");
 		sb.append(bornDate);
-		sb.append(", address=");
-		sb.append(address);
+		sb.append(", addressId=");
+		sb.append(addressId);
 		sb.append("}");
 
 		return sb.toString();
@@ -91,6 +103,30 @@ public class StudentCacheModel implements CacheModel<Student>, Externalizable {
 		}
 
 		studentImpl.setStudentId(studentId);
+		studentImpl.setGroupId(groupId);
+		studentImpl.setCompanyId(companyId);
+		studentImpl.setUserId(userId);
+
+		if (userName == null) {
+			studentImpl.setUserName("");
+		}
+		else {
+			studentImpl.setUserName(userName);
+		}
+
+		if (createDate == Long.MIN_VALUE) {
+			studentImpl.setCreateDate(null);
+		}
+		else {
+			studentImpl.setCreateDate(new Date(createDate));
+		}
+
+		if (modifiedDate == Long.MIN_VALUE) {
+			studentImpl.setModifiedDate(null);
+		}
+		else {
+			studentImpl.setModifiedDate(new Date(modifiedDate));
+		}
 
 		if (name == null) {
 			studentImpl.setName("");
@@ -113,12 +149,7 @@ public class StudentCacheModel implements CacheModel<Student>, Externalizable {
 			studentImpl.setBornDate(new Date(bornDate));
 		}
 
-		if (address == null) {
-			studentImpl.setAddress("");
-		}
-		else {
-			studentImpl.setAddress(address);
-		}
+		studentImpl.setAddressId(addressId);
 
 		studentImpl.resetOriginalValues();
 
@@ -130,10 +161,20 @@ public class StudentCacheModel implements CacheModel<Student>, Externalizable {
 		uuid = objectInput.readUTF();
 
 		studentId = objectInput.readLong();
+
+		groupId = objectInput.readLong();
+
+		companyId = objectInput.readLong();
+
+		userId = objectInput.readLong();
+		userName = objectInput.readUTF();
+		createDate = objectInput.readLong();
+		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		surname = objectInput.readUTF();
 		bornDate = objectInput.readLong();
-		address = objectInput.readUTF();
+
+		addressId = objectInput.readLong();
 	}
 
 	@Override
@@ -146,6 +187,22 @@ public class StudentCacheModel implements CacheModel<Student>, Externalizable {
 		}
 
 		objectOutput.writeLong(studentId);
+
+		objectOutput.writeLong(groupId);
+
+		objectOutput.writeLong(companyId);
+
+		objectOutput.writeLong(userId);
+
+		if (userName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(userName);
+		}
+
+		objectOutput.writeLong(createDate);
+		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
 			objectOutput.writeUTF("");
@@ -163,19 +220,20 @@ public class StudentCacheModel implements CacheModel<Student>, Externalizable {
 
 		objectOutput.writeLong(bornDate);
 
-		if (address == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(address);
-		}
+		objectOutput.writeLong(addressId);
 	}
 
 	public String uuid;
 	public long studentId;
+	public long groupId;
+	public long companyId;
+	public long userId;
+	public String userName;
+	public long createDate;
+	public long modifiedDate;
 	public String name;
 	public String surname;
 	public long bornDate;
-	public String address;
+	public long addressId;
 
 }

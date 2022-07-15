@@ -225,11 +225,35 @@ public class StudentLocalServiceWrapper
 		return _studentLocalService.fetchStudent(studentId);
 	}
 
+	/**
+	 * Returns the student matching the UUID and group.
+	 *
+	 * @param uuid the student's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching student, or <code>null</code> if a matching student could not be found
+	 */
+	@Override
+	public com.liferay.library.model.Student fetchStudentByUuidAndGroupId(
+		String uuid, long groupId) {
+
+		return _studentLocalService.fetchStudentByUuidAndGroupId(uuid, groupId);
+	}
+
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
 		return _studentLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return _studentLocalService.getExportActionableDynamicQuery(
+			portletDataContext);
 	}
 
 	@Override
@@ -275,6 +299,22 @@ public class StudentLocalServiceWrapper
 	}
 
 	/**
+	 * Returns the student matching the UUID and group.
+	 *
+	 * @param uuid the student's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching student
+	 * @throws PortalException if a matching student could not be found
+	 */
+	@Override
+	public com.liferay.library.model.Student getStudentByUuidAndGroupId(
+			String uuid, long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _studentLocalService.getStudentByUuidAndGroupId(uuid, groupId);
+	}
+
+	/**
 	 * Returns a range of all the students.
 	 *
 	 * <p>
@@ -290,6 +330,42 @@ public class StudentLocalServiceWrapper
 		int start, int end) {
 
 		return _studentLocalService.getStudents(start, end);
+	}
+
+	/**
+	 * Returns all the students matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the students
+	 * @param companyId the primary key of the company
+	 * @return the matching students, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.liferay.library.model.Student>
+		getStudentsByUuidAndCompanyId(String uuid, long companyId) {
+
+		return _studentLocalService.getStudentsByUuidAndCompanyId(
+			uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of students matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the students
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching students, or an empty list if no matches were found
+	 */
+	@Override
+	public java.util.List<com.liferay.library.model.Student>
+		getStudentsByUuidAndCompanyId(
+			String uuid, long companyId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<com.liferay.library.model.Student> orderByComparator) {
+
+		return _studentLocalService.getStudentsByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
 	}
 
 	/**

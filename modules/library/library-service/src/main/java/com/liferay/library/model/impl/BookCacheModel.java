@@ -60,18 +60,30 @@ public class BookCacheModel implements CacheModel<Book>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
 		sb.append(", bookId=");
 		sb.append(bookId);
+		sb.append(", groupId=");
+		sb.append(groupId);
+		sb.append(", companyId=");
+		sb.append(companyId);
+		sb.append(", userId=");
+		sb.append(userId);
+		sb.append(", userName=");
+		sb.append(userName);
+		sb.append(", createDate=");
+		sb.append(createDate);
+		sb.append(", modifiedDate=");
+		sb.append(modifiedDate);
 		sb.append(", authorId=");
 		sb.append(authorId);
 		sb.append(", bookTitle=");
 		sb.append(bookTitle);
-		sb.append(", createDate=");
-		sb.append(createDate);
+		sb.append(", publishingYear=");
+		sb.append(publishingYear);
 		sb.append(", genreId=");
 		sb.append(genreId);
 		sb.append(", studentId=");
@@ -93,6 +105,31 @@ public class BookCacheModel implements CacheModel<Book>, Externalizable {
 		}
 
 		bookImpl.setBookId(bookId);
+		bookImpl.setGroupId(groupId);
+		bookImpl.setCompanyId(companyId);
+		bookImpl.setUserId(userId);
+
+		if (userName == null) {
+			bookImpl.setUserName("");
+		}
+		else {
+			bookImpl.setUserName(userName);
+		}
+
+		if (createDate == Long.MIN_VALUE) {
+			bookImpl.setCreateDate(null);
+		}
+		else {
+			bookImpl.setCreateDate(new Date(createDate));
+		}
+
+		if (modifiedDate == Long.MIN_VALUE) {
+			bookImpl.setModifiedDate(null);
+		}
+		else {
+			bookImpl.setModifiedDate(new Date(modifiedDate));
+		}
+
 		bookImpl.setAuthorId(authorId);
 
 		if (bookTitle == null) {
@@ -102,11 +139,11 @@ public class BookCacheModel implements CacheModel<Book>, Externalizable {
 			bookImpl.setBookTitle(bookTitle);
 		}
 
-		if (createDate == Long.MIN_VALUE) {
-			bookImpl.setCreateDate(null);
+		if (publishingYear == Long.MIN_VALUE) {
+			bookImpl.setPublishingYear(null);
 		}
 		else {
-			bookImpl.setCreateDate(new Date(createDate));
+			bookImpl.setPublishingYear(new Date(publishingYear));
 		}
 
 		bookImpl.setGenreId(genreId);
@@ -123,9 +160,18 @@ public class BookCacheModel implements CacheModel<Book>, Externalizable {
 
 		bookId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
+		companyId = objectInput.readLong();
+
+		userId = objectInput.readLong();
+		userName = objectInput.readUTF();
+		createDate = objectInput.readLong();
+		modifiedDate = objectInput.readLong();
+
 		authorId = objectInput.readLong();
 		bookTitle = objectInput.readUTF();
-		createDate = objectInput.readLong();
+		publishingYear = objectInput.readLong();
 
 		genreId = objectInput.readLong();
 
@@ -143,6 +189,22 @@ public class BookCacheModel implements CacheModel<Book>, Externalizable {
 
 		objectOutput.writeLong(bookId);
 
+		objectOutput.writeLong(groupId);
+
+		objectOutput.writeLong(companyId);
+
+		objectOutput.writeLong(userId);
+
+		if (userName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(userName);
+		}
+
+		objectOutput.writeLong(createDate);
+		objectOutput.writeLong(modifiedDate);
+
 		objectOutput.writeLong(authorId);
 
 		if (bookTitle == null) {
@@ -152,7 +214,7 @@ public class BookCacheModel implements CacheModel<Book>, Externalizable {
 			objectOutput.writeUTF(bookTitle);
 		}
 
-		objectOutput.writeLong(createDate);
+		objectOutput.writeLong(publishingYear);
 
 		objectOutput.writeLong(genreId);
 
@@ -161,9 +223,15 @@ public class BookCacheModel implements CacheModel<Book>, Externalizable {
 
 	public String uuid;
 	public long bookId;
+	public long groupId;
+	public long companyId;
+	public long userId;
+	public String userName;
+	public long createDate;
+	public long modifiedDate;
 	public long authorId;
 	public String bookTitle;
-	public long createDate;
+	public long publishingYear;
 	public long genreId;
 	public long studentId;
 

@@ -16,15 +16,21 @@ package com.liferay.library.model.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.library.model.Student;
 import com.liferay.library.model.StudentModel;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -69,8 +75,11 @@ public class StudentModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"uuid_", Types.VARCHAR}, {"studentId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"name", Types.VARCHAR}, {"surname", Types.VARCHAR},
-		{"bornDate", Types.TIMESTAMP}, {"address", Types.VARCHAR}
+		{"bornDate", Types.TIMESTAMP}, {"addressId", Types.BIGINT}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -79,14 +88,20 @@ public class StudentModelImpl
 	static {
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("studentId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("surname", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("bornDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("address", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("addressId", Types.BIGINT);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LB_Student (uuid_ VARCHAR(75) null,studentId LONG not null primary key,name VARCHAR(75) null,surname VARCHAR(75) null,bornDate DATE null,address VARCHAR(75) null)";
+		"create table LB_Student (uuid_ VARCHAR(75) null,studentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,surname VARCHAR(75) null,bornDate DATE null,addressId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table LB_Student";
 
@@ -105,14 +120,26 @@ public class StudentModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 1L;
+	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long GROUPID_COLUMN_BITMASK = 2L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long SURNAME_COLUMN_BITMASK = 2L;
+	public static final long SURNAME_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -256,6 +283,25 @@ public class StudentModelImpl
 		attributeGetterFunctions.put("studentId", Student::getStudentId);
 		attributeSetterBiConsumers.put(
 			"studentId", (BiConsumer<Student, Long>)Student::setStudentId);
+		attributeGetterFunctions.put("groupId", Student::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId", (BiConsumer<Student, Long>)Student::setGroupId);
+		attributeGetterFunctions.put("companyId", Student::getCompanyId);
+		attributeSetterBiConsumers.put(
+			"companyId", (BiConsumer<Student, Long>)Student::setCompanyId);
+		attributeGetterFunctions.put("userId", Student::getUserId);
+		attributeSetterBiConsumers.put(
+			"userId", (BiConsumer<Student, Long>)Student::setUserId);
+		attributeGetterFunctions.put("userName", Student::getUserName);
+		attributeSetterBiConsumers.put(
+			"userName", (BiConsumer<Student, String>)Student::setUserName);
+		attributeGetterFunctions.put("createDate", Student::getCreateDate);
+		attributeSetterBiConsumers.put(
+			"createDate", (BiConsumer<Student, Date>)Student::setCreateDate);
+		attributeGetterFunctions.put("modifiedDate", Student::getModifiedDate);
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			(BiConsumer<Student, Date>)Student::setModifiedDate);
 		attributeGetterFunctions.put("name", Student::getName);
 		attributeSetterBiConsumers.put(
 			"name", (BiConsumer<Student, String>)Student::setName);
@@ -265,9 +311,9 @@ public class StudentModelImpl
 		attributeGetterFunctions.put("bornDate", Student::getBornDate);
 		attributeSetterBiConsumers.put(
 			"bornDate", (BiConsumer<Student, Date>)Student::setBornDate);
-		attributeGetterFunctions.put("address", Student::getAddress);
+		attributeGetterFunctions.put("addressId", Student::getAddressId);
 		attributeSetterBiConsumers.put(
-			"address", (BiConsumer<Student, String>)Student::setAddress);
+			"addressId", (BiConsumer<Student, Long>)Student::setAddressId);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -317,6 +363,142 @@ public class StudentModelImpl
 		}
 
 		_studentId = studentId;
+	}
+
+	@JSON
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_groupId = groupId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalGroupId() {
+		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_companyId = companyId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalCompanyId() {
+		return GetterUtil.getLong(
+			this.<Long>getColumnOriginalValue("companyId"));
+	}
+
+	@JSON
+	@Override
+	public long getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public void setUserId(long userId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_userId = userId;
+	}
+
+	@Override
+	public String getUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setUserUuid(String userUuid) {
+	}
+
+	@JSON
+	@Override
+	public String getUserName() {
+		if (_userName == null) {
+			return "";
+		}
+		else {
+			return _userName;
+		}
+	}
+
+	@Override
+	public void setUserName(String userName) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_userName = userName;
+	}
+
+	@JSON
+	@Override
+	public Date getCreateDate() {
+		return _createDate;
+	}
+
+	@Override
+	public void setCreateDate(Date createDate) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_createDate = createDate;
+	}
+
+	@JSON
+	@Override
+	public Date getModifiedDate() {
+		return _modifiedDate;
+	}
+
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_modifiedDate = modifiedDate;
 	}
 
 	@JSON
@@ -376,22 +558,23 @@ public class StudentModelImpl
 
 	@JSON
 	@Override
-	public String getAddress() {
-		if (_address == null) {
-			return "";
-		}
-		else {
-			return _address;
-		}
+	public long getAddressId() {
+		return _addressId;
 	}
 
 	@Override
-	public void setAddress(String address) {
+	public void setAddressId(long addressId) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
 
-		_address = address;
+		_addressId = addressId;
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return new StagedModelType(
+			PortalUtil.getClassNameId(Student.class.getName()));
 	}
 
 	public long getColumnBitmask() {
@@ -421,7 +604,7 @@ public class StudentModelImpl
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, Student.class.getName(), getPrimaryKey());
+			getCompanyId(), Student.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -452,10 +635,16 @@ public class StudentModelImpl
 
 		studentImpl.setUuid(getUuid());
 		studentImpl.setStudentId(getStudentId());
+		studentImpl.setGroupId(getGroupId());
+		studentImpl.setCompanyId(getCompanyId());
+		studentImpl.setUserId(getUserId());
+		studentImpl.setUserName(getUserName());
+		studentImpl.setCreateDate(getCreateDate());
+		studentImpl.setModifiedDate(getModifiedDate());
 		studentImpl.setName(getName());
 		studentImpl.setSurname(getSurname());
 		studentImpl.setBornDate(getBornDate());
-		studentImpl.setAddress(getAddress());
+		studentImpl.setAddressId(getAddressId());
 
 		studentImpl.resetOriginalValues();
 
@@ -469,10 +658,21 @@ public class StudentModelImpl
 		studentImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
 		studentImpl.setStudentId(
 			this.<Long>getColumnOriginalValue("studentId"));
+		studentImpl.setGroupId(this.<Long>getColumnOriginalValue("groupId"));
+		studentImpl.setCompanyId(
+			this.<Long>getColumnOriginalValue("companyId"));
+		studentImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
+		studentImpl.setUserName(
+			this.<String>getColumnOriginalValue("userName"));
+		studentImpl.setCreateDate(
+			this.<Date>getColumnOriginalValue("createDate"));
+		studentImpl.setModifiedDate(
+			this.<Date>getColumnOriginalValue("modifiedDate"));
 		studentImpl.setName(this.<String>getColumnOriginalValue("name"));
 		studentImpl.setSurname(this.<String>getColumnOriginalValue("surname"));
 		studentImpl.setBornDate(this.<Date>getColumnOriginalValue("bornDate"));
-		studentImpl.setAddress(this.<String>getColumnOriginalValue("address"));
+		studentImpl.setAddressId(
+			this.<Long>getColumnOriginalValue("addressId"));
 
 		return studentImpl;
 	}
@@ -539,6 +739,8 @@ public class StudentModelImpl
 	public void resetOriginalValues() {
 		_columnOriginalValues = Collections.emptyMap();
 
+		_setModifiedDate = false;
+
 		_columnBitmask = 0;
 	}
 
@@ -555,6 +757,38 @@ public class StudentModelImpl
 		}
 
 		studentCacheModel.studentId = getStudentId();
+
+		studentCacheModel.groupId = getGroupId();
+
+		studentCacheModel.companyId = getCompanyId();
+
+		studentCacheModel.userId = getUserId();
+
+		studentCacheModel.userName = getUserName();
+
+		String userName = studentCacheModel.userName;
+
+		if ((userName != null) && (userName.length() == 0)) {
+			studentCacheModel.userName = null;
+		}
+
+		Date createDate = getCreateDate();
+
+		if (createDate != null) {
+			studentCacheModel.createDate = createDate.getTime();
+		}
+		else {
+			studentCacheModel.createDate = Long.MIN_VALUE;
+		}
+
+		Date modifiedDate = getModifiedDate();
+
+		if (modifiedDate != null) {
+			studentCacheModel.modifiedDate = modifiedDate.getTime();
+		}
+		else {
+			studentCacheModel.modifiedDate = Long.MIN_VALUE;
+		}
 
 		studentCacheModel.name = getName();
 
@@ -581,13 +815,7 @@ public class StudentModelImpl
 			studentCacheModel.bornDate = Long.MIN_VALUE;
 		}
 
-		studentCacheModel.address = getAddress();
-
-		String address = studentCacheModel.address;
-
-		if ((address != null) && (address.length() == 0)) {
-			studentCacheModel.address = null;
-		}
+		studentCacheModel.addressId = getAddressId();
 
 		return studentCacheModel;
 	}
@@ -681,10 +909,17 @@ public class StudentModelImpl
 
 	private String _uuid;
 	private long _studentId;
+	private long _groupId;
+	private long _companyId;
+	private long _userId;
+	private String _userName;
+	private Date _createDate;
+	private Date _modifiedDate;
+	private boolean _setModifiedDate;
 	private String _name;
 	private String _surname;
 	private Date _bornDate;
-	private String _address;
+	private long _addressId;
 
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
@@ -717,10 +952,16 @@ public class StudentModelImpl
 
 		_columnOriginalValues.put("uuid_", _uuid);
 		_columnOriginalValues.put("studentId", _studentId);
+		_columnOriginalValues.put("groupId", _groupId);
+		_columnOriginalValues.put("companyId", _companyId);
+		_columnOriginalValues.put("userId", _userId);
+		_columnOriginalValues.put("userName", _userName);
+		_columnOriginalValues.put("createDate", _createDate);
+		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("surname", _surname);
 		_columnOriginalValues.put("bornDate", _bornDate);
-		_columnOriginalValues.put("address", _address);
+		_columnOriginalValues.put("addressId", _addressId);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -748,13 +989,25 @@ public class StudentModelImpl
 
 		columnBitmasks.put("studentId", 2L);
 
-		columnBitmasks.put("name", 4L);
+		columnBitmasks.put("groupId", 4L);
 
-		columnBitmasks.put("surname", 8L);
+		columnBitmasks.put("companyId", 8L);
 
-		columnBitmasks.put("bornDate", 16L);
+		columnBitmasks.put("userId", 16L);
 
-		columnBitmasks.put("address", 32L);
+		columnBitmasks.put("userName", 32L);
+
+		columnBitmasks.put("createDate", 64L);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		columnBitmasks.put("name", 256L);
+
+		columnBitmasks.put("surname", 512L);
+
+		columnBitmasks.put("bornDate", 1024L);
+
+		columnBitmasks.put("addressId", 2048L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

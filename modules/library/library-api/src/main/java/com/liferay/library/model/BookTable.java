@@ -36,12 +36,24 @@ public class BookTable extends BaseTable<BookTable> {
 		"uuid_", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<BookTable, Long> bookId = createColumn(
 		"bookId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
+	public final Column<BookTable, Long> groupId = createColumn(
+		"groupId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<BookTable, Long> companyId = createColumn(
+		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<BookTable, Long> userId = createColumn(
+		"userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<BookTable, String> userName = createColumn(
+		"userName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<BookTable, Date> createDate = createColumn(
+		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
+	public final Column<BookTable, Date> modifiedDate = createColumn(
+		"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<BookTable, Long> authorId = createColumn(
 		"authorId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<BookTable, String> bookTitle = createColumn(
 		"bookTitle", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
-	public final Column<BookTable, Date> createDate = createColumn(
-		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
+	public final Column<BookTable, Date> publishingYear = createColumn(
+		"publishingYear", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<BookTable, Long> genreId = createColumn(
 		"genreId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<BookTable, Long> studentId = createColumn(

@@ -1,26 +1,58 @@
 <?xml version="1.0"?>
 
 <model-hints>
+	<model name="com.liferay.library.model.Address">
+		<field name="uuid" type="String" />
+		<field name="addressId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="town" type="String" />
+		<field name="street" type="String" />
+		<field name="house" type="String" />
+		<field name="flat" type="String" />
+	</model>
 	<model name="com.liferay.library.model.Book">
 		<field name="uuid" type="String" />
 		<field name="bookId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
 		<field name="authorId" type="long" />
 		<field name="bookTitle" type="String" />
-		<field name="createDate" type="Date" />
+		<field name="publishingYear" type="Date" />
 		<field name="genreId" type="long" />
 		<field name="studentId" type="long" />
 	</model>
 	<model name="com.liferay.library.model.Genre">
 		<field name="uuid" type="String" />
 		<field name="genreId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
 		<field name="title" type="String" />
 	</model>
 	<model name="com.liferay.library.model.Student">
 		<field name="uuid" type="String" />
 		<field name="studentId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
 		<field name="name" type="String" />
 		<field name="surname" type="String" />
 		<field name="bornDate" type="Date" />
-		<field name="address" type="String" />
+		<field name="addressId" type="long" />
 	</model>
 </model-hints>

@@ -16,6 +16,9 @@ package com.liferay.library.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.StagedAuditedModel;
 
 import java.util.Date;
 
@@ -33,7 +36,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface BookModel extends BaseModel<Book> {
+public interface BookModel
+	extends BaseModel<Book>, GroupedModel, ShardedModel, StagedAuditedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -61,6 +65,7 @@ public interface BookModel extends BaseModel<Book> {
 	 * @return the uuid of this book
 	 */
 	@AutoEscape
+	@Override
 	public String getUuid();
 
 	/**
@@ -68,6 +73,7 @@ public interface BookModel extends BaseModel<Book> {
 	 *
 	 * @param uuid the uuid of this book
 	 */
+	@Override
 	public void setUuid(String uuid);
 
 	/**
@@ -83,6 +89,119 @@ public interface BookModel extends BaseModel<Book> {
 	 * @param bookId the book ID of this book
 	 */
 	public void setBookId(long bookId);
+
+	/**
+	 * Returns the group ID of this book.
+	 *
+	 * @return the group ID of this book
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this book.
+	 *
+	 * @param groupId the group ID of this book
+	 */
+	@Override
+	public void setGroupId(long groupId);
+
+	/**
+	 * Returns the company ID of this book.
+	 *
+	 * @return the company ID of this book
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this book.
+	 *
+	 * @param companyId the company ID of this book
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
+	 * Returns the user ID of this book.
+	 *
+	 * @return the user ID of this book
+	 */
+	@Override
+	public long getUserId();
+
+	/**
+	 * Sets the user ID of this book.
+	 *
+	 * @param userId the user ID of this book
+	 */
+	@Override
+	public void setUserId(long userId);
+
+	/**
+	 * Returns the user uuid of this book.
+	 *
+	 * @return the user uuid of this book
+	 */
+	@Override
+	public String getUserUuid();
+
+	/**
+	 * Sets the user uuid of this book.
+	 *
+	 * @param userUuid the user uuid of this book
+	 */
+	@Override
+	public void setUserUuid(String userUuid);
+
+	/**
+	 * Returns the user name of this book.
+	 *
+	 * @return the user name of this book
+	 */
+	@AutoEscape
+	@Override
+	public String getUserName();
+
+	/**
+	 * Sets the user name of this book.
+	 *
+	 * @param userName the user name of this book
+	 */
+	@Override
+	public void setUserName(String userName);
+
+	/**
+	 * Returns the create date of this book.
+	 *
+	 * @return the create date of this book
+	 */
+	@Override
+	public Date getCreateDate();
+
+	/**
+	 * Sets the create date of this book.
+	 *
+	 * @param createDate the create date of this book
+	 */
+	@Override
+	public void setCreateDate(Date createDate);
+
+	/**
+	 * Returns the modified date of this book.
+	 *
+	 * @return the modified date of this book
+	 */
+	@Override
+	public Date getModifiedDate();
+
+	/**
+	 * Sets the modified date of this book.
+	 *
+	 * @param modifiedDate the modified date of this book
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate);
 
 	/**
 	 * Returns the author ID of this book.
@@ -114,18 +233,18 @@ public interface BookModel extends BaseModel<Book> {
 	public void setBookTitle(String bookTitle);
 
 	/**
-	 * Returns the create date of this book.
+	 * Returns the publishing year of this book.
 	 *
-	 * @return the create date of this book
+	 * @return the publishing year of this book
 	 */
-	public Date getCreateDate();
+	public Date getPublishingYear();
 
 	/**
-	 * Sets the create date of this book.
+	 * Sets the publishing year of this book.
 	 *
-	 * @param createDate the create date of this book
+	 * @param publishingYear the publishing year of this book
 	 */
-	public void setCreateDate(Date createDate);
+	public void setPublishingYear(Date publishingYear);
 
 	/**
 	 * Returns the genre ID of this book.

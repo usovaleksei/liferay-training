@@ -281,6 +281,252 @@ public class StudentUtil {
 	}
 
 	/**
+	 * Returns the student where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchStudentException</code> if it could not be found.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the matching student
+	 * @throws NoSuchStudentException if a matching student could not be found
+	 */
+	public static Student findByUUID_G(String uuid, long groupId)
+		throws com.liferay.library.exception.NoSuchStudentException {
+
+		return getPersistence().findByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the student where uuid = &#63; and groupId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the matching student, or <code>null</code> if a matching student could not be found
+	 */
+	public static Student fetchByUUID_G(String uuid, long groupId) {
+		return getPersistence().fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the student where uuid = &#63; and groupId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching student, or <code>null</code> if a matching student could not be found
+	 */
+	public static Student fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache) {
+
+		return getPersistence().fetchByUUID_G(uuid, groupId, useFinderCache);
+	}
+
+	/**
+	 * Removes the student where uuid = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the student that was removed
+	 */
+	public static Student removeByUUID_G(String uuid, long groupId)
+		throws com.liferay.library.exception.NoSuchStudentException {
+
+		return getPersistence().removeByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the number of students where uuid = &#63; and groupId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the number of matching students
+	 */
+	public static int countByUUID_G(String uuid, long groupId) {
+		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns all the students where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @return the matching students
+	 */
+	public static List<Student> findByUuid_C(String uuid, long companyId) {
+		return getPersistence().findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of all the students where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @return the range of matching students
+	 */
+	public static List<Student> findByUuid_C(
+		String uuid, long companyId, int start, int end) {
+
+		return getPersistence().findByUuid_C(uuid, companyId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the students where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching students
+	 */
+	public static List<Student> findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Student> orderByComparator) {
+
+		return getPersistence().findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the students where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>StudentModelImpl</code>.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching students
+	 */
+	public static List<Student> findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Student> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first student in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching student
+	 * @throws NoSuchStudentException if a matching student could not be found
+	 */
+	public static Student findByUuid_C_First(
+			String uuid, long companyId,
+			OrderByComparator<Student> orderByComparator)
+		throws com.liferay.library.exception.NoSuchStudentException {
+
+		return getPersistence().findByUuid_C_First(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first student in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching student, or <code>null</code> if a matching student could not be found
+	 */
+	public static Student fetchByUuid_C_First(
+		String uuid, long companyId,
+		OrderByComparator<Student> orderByComparator) {
+
+		return getPersistence().fetchByUuid_C_First(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last student in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching student
+	 * @throws NoSuchStudentException if a matching student could not be found
+	 */
+	public static Student findByUuid_C_Last(
+			String uuid, long companyId,
+			OrderByComparator<Student> orderByComparator)
+		throws com.liferay.library.exception.NoSuchStudentException {
+
+		return getPersistence().findByUuid_C_Last(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last student in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching student, or <code>null</code> if a matching student could not be found
+	 */
+	public static Student fetchByUuid_C_Last(
+		String uuid, long companyId,
+		OrderByComparator<Student> orderByComparator) {
+
+		return getPersistence().fetchByUuid_C_Last(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the students before and after the current student in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param studentId the primary key of the current student
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next student
+	 * @throws NoSuchStudentException if a student with the primary key could not be found
+	 */
+	public static Student[] findByUuid_C_PrevAndNext(
+			long studentId, String uuid, long companyId,
+			OrderByComparator<Student> orderByComparator)
+		throws com.liferay.library.exception.NoSuchStudentException {
+
+		return getPersistence().findByUuid_C_PrevAndNext(
+			studentId, uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the students where uuid = &#63; and companyId = &#63; from the database.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 */
+	public static void removeByUuid_C(String uuid, long companyId) {
+		getPersistence().removeByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns the number of students where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @return the number of matching students
+	 */
+	public static int countByUuid_C(String uuid, long companyId) {
+		return getPersistence().countByUuid_C(uuid, companyId);
+	}
+
+	/**
 	 * Caches the student in the entity cache if it is enabled.
 	 *
 	 * @param student the student

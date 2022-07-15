@@ -276,6 +276,252 @@ public class BookUtil {
 	}
 
 	/**
+	 * Returns the book where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchBookException</code> if it could not be found.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the matching book
+	 * @throws NoSuchBookException if a matching book could not be found
+	 */
+	public static Book findByUUID_G(String uuid, long groupId)
+		throws com.liferay.library.exception.NoSuchBookException {
+
+		return getPersistence().findByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the book where uuid = &#63; and groupId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the matching book, or <code>null</code> if a matching book could not be found
+	 */
+	public static Book fetchByUUID_G(String uuid, long groupId) {
+		return getPersistence().fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the book where uuid = &#63; and groupId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching book, or <code>null</code> if a matching book could not be found
+	 */
+	public static Book fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache) {
+
+		return getPersistence().fetchByUUID_G(uuid, groupId, useFinderCache);
+	}
+
+	/**
+	 * Removes the book where uuid = &#63; and groupId = &#63; from the database.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the book that was removed
+	 */
+	public static Book removeByUUID_G(String uuid, long groupId)
+		throws com.liferay.library.exception.NoSuchBookException {
+
+		return getPersistence().removeByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns the number of books where uuid = &#63; and groupId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param groupId the group ID
+	 * @return the number of matching books
+	 */
+	public static int countByUUID_G(String uuid, long groupId) {
+		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	/**
+	 * Returns all the books where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @return the matching books
+	 */
+	public static List<Book> findByUuid_C(String uuid, long companyId) {
+		return getPersistence().findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of all the books where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BookModelImpl</code>.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of books
+	 * @param end the upper bound of the range of books (not inclusive)
+	 * @return the range of matching books
+	 */
+	public static List<Book> findByUuid_C(
+		String uuid, long companyId, int start, int end) {
+
+		return getPersistence().findByUuid_C(uuid, companyId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the books where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BookModelImpl</code>.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of books
+	 * @param end the upper bound of the range of books (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching books
+	 */
+	public static List<Book> findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Book> orderByComparator) {
+
+		return getPersistence().findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the books where uuid = &#63; and companyId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>BookModelImpl</code>.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param start the lower bound of the range of books
+	 * @param end the upper bound of the range of books (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching books
+	 */
+	public static List<Book> findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Book> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first book in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching book
+	 * @throws NoSuchBookException if a matching book could not be found
+	 */
+	public static Book findByUuid_C_First(
+			String uuid, long companyId,
+			OrderByComparator<Book> orderByComparator)
+		throws com.liferay.library.exception.NoSuchBookException {
+
+		return getPersistence().findByUuid_C_First(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first book in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching book, or <code>null</code> if a matching book could not be found
+	 */
+	public static Book fetchByUuid_C_First(
+		String uuid, long companyId,
+		OrderByComparator<Book> orderByComparator) {
+
+		return getPersistence().fetchByUuid_C_First(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last book in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching book
+	 * @throws NoSuchBookException if a matching book could not be found
+	 */
+	public static Book findByUuid_C_Last(
+			String uuid, long companyId,
+			OrderByComparator<Book> orderByComparator)
+		throws com.liferay.library.exception.NoSuchBookException {
+
+		return getPersistence().findByUuid_C_Last(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last book in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching book, or <code>null</code> if a matching book could not be found
+	 */
+	public static Book fetchByUuid_C_Last(
+		String uuid, long companyId,
+		OrderByComparator<Book> orderByComparator) {
+
+		return getPersistence().fetchByUuid_C_Last(
+			uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Returns the books before and after the current book in the ordered set where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param bookId the primary key of the current book
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next book
+	 * @throws NoSuchBookException if a book with the primary key could not be found
+	 */
+	public static Book[] findByUuid_C_PrevAndNext(
+			long bookId, String uuid, long companyId,
+			OrderByComparator<Book> orderByComparator)
+		throws com.liferay.library.exception.NoSuchBookException {
+
+		return getPersistence().findByUuid_C_PrevAndNext(
+			bookId, uuid, companyId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the books where uuid = &#63; and companyId = &#63; from the database.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 */
+	public static void removeByUuid_C(String uuid, long companyId) {
+		getPersistence().removeByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns the number of books where uuid = &#63; and companyId = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param companyId the company ID
+	 * @return the number of matching books
+	 */
+	public static int countByUuid_C(String uuid, long companyId) {
+		return getPersistence().countByUuid_C(uuid, companyId);
+	}
+
+	/**
 	 * Returns all the books where bookTitle = &#63;.
 	 *
 	 * @param bookTitle the book title

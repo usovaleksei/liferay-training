@@ -14,9 +14,11 @@
 
 package com.liferay.library.model;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,12 @@ public class GenreWrapper
 
 		attributes.put("uuid", getUuid());
 		attributes.put("genreId", getGenreId());
+		attributes.put("groupId", getGroupId());
+		attributes.put("companyId", getCompanyId());
+		attributes.put("userId", getUserId());
+		attributes.put("userName", getUserName());
+		attributes.put("createDate", getCreateDate());
+		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("title", getTitle());
 
 		return attributes;
@@ -61,6 +69,42 @@ public class GenreWrapper
 			setGenreId(genreId);
 		}
 
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
+
+		Long userId = (Long)attributes.get("userId");
+
+		if (userId != null) {
+			setUserId(userId);
+		}
+
+		String userName = (String)attributes.get("userName");
+
+		if (userName != null) {
+			setUserName(userName);
+		}
+
+		Date createDate = (Date)attributes.get("createDate");
+
+		if (createDate != null) {
+			setCreateDate(createDate);
+		}
+
+		Date modifiedDate = (Date)attributes.get("modifiedDate");
+
+		if (modifiedDate != null) {
+			setModifiedDate(modifiedDate);
+		}
+
 		String title = (String)attributes.get("title");
 
 		if (title != null) {
@@ -74,6 +118,26 @@ public class GenreWrapper
 	}
 
 	/**
+	 * Returns the company ID of this genre.
+	 *
+	 * @return the company ID of this genre
+	 */
+	@Override
+	public long getCompanyId() {
+		return model.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this genre.
+	 *
+	 * @return the create date of this genre
+	 */
+	@Override
+	public Date getCreateDate() {
+		return model.getCreateDate();
+	}
+
+	/**
 	 * Returns the genre ID of this genre.
 	 *
 	 * @return the genre ID of this genre
@@ -81,6 +145,26 @@ public class GenreWrapper
 	@Override
 	public long getGenreId() {
 		return model.getGenreId();
+	}
+
+	/**
+	 * Returns the group ID of this genre.
+	 *
+	 * @return the group ID of this genre
+	 */
+	@Override
+	public long getGroupId() {
+		return model.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this genre.
+	 *
+	 * @return the modified date of this genre
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return model.getModifiedDate();
 	}
 
 	/**
@@ -104,6 +188,36 @@ public class GenreWrapper
 	}
 
 	/**
+	 * Returns the user ID of this genre.
+	 *
+	 * @return the user ID of this genre
+	 */
+	@Override
+	public long getUserId() {
+		return model.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this genre.
+	 *
+	 * @return the user name of this genre
+	 */
+	@Override
+	public String getUserName() {
+		return model.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this genre.
+	 *
+	 * @return the user uuid of this genre
+	 */
+	@Override
+	public String getUserUuid() {
+		return model.getUserUuid();
+	}
+
+	/**
 	 * Returns the uuid of this genre.
 	 *
 	 * @return the uuid of this genre
@@ -119,6 +233,26 @@ public class GenreWrapper
 	}
 
 	/**
+	 * Sets the company ID of this genre.
+	 *
+	 * @param companyId the company ID of this genre
+	 */
+	@Override
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
+	}
+
+	/**
+	 * Sets the create date of this genre.
+	 *
+	 * @param createDate the create date of this genre
+	 */
+	@Override
+	public void setCreateDate(Date createDate) {
+		model.setCreateDate(createDate);
+	}
+
+	/**
 	 * Sets the genre ID of this genre.
 	 *
 	 * @param genreId the genre ID of this genre
@@ -126,6 +260,26 @@ public class GenreWrapper
 	@Override
 	public void setGenreId(long genreId) {
 		model.setGenreId(genreId);
+	}
+
+	/**
+	 * Sets the group ID of this genre.
+	 *
+	 * @param groupId the group ID of this genre
+	 */
+	@Override
+	public void setGroupId(long groupId) {
+		model.setGroupId(groupId);
+	}
+
+	/**
+	 * Sets the modified date of this genre.
+	 *
+	 * @param modifiedDate the modified date of this genre
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		model.setModifiedDate(modifiedDate);
 	}
 
 	/**
@@ -149,6 +303,36 @@ public class GenreWrapper
 	}
 
 	/**
+	 * Sets the user ID of this genre.
+	 *
+	 * @param userId the user ID of this genre
+	 */
+	@Override
+	public void setUserId(long userId) {
+		model.setUserId(userId);
+	}
+
+	/**
+	 * Sets the user name of this genre.
+	 *
+	 * @param userName the user name of this genre
+	 */
+	@Override
+	public void setUserName(String userName) {
+		model.setUserName(userName);
+	}
+
+	/**
+	 * Sets the user uuid of this genre.
+	 *
+	 * @param userUuid the user uuid of this genre
+	 */
+	@Override
+	public void setUserUuid(String userUuid) {
+		model.setUserUuid(userUuid);
+	}
+
+	/**
 	 * Sets the uuid of this genre.
 	 *
 	 * @param uuid the uuid of this genre
@@ -156,6 +340,11 @@ public class GenreWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return model.getStagedModelType();
 	}
 
 	@Override

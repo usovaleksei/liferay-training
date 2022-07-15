@@ -14,6 +14,7 @@
 
 package com.liferay.library.model;
 
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.wrapper.BaseModelWrapper;
 
@@ -44,10 +45,16 @@ public class StudentWrapper
 
 		attributes.put("uuid", getUuid());
 		attributes.put("studentId", getStudentId());
+		attributes.put("groupId", getGroupId());
+		attributes.put("companyId", getCompanyId());
+		attributes.put("userId", getUserId());
+		attributes.put("userName", getUserName());
+		attributes.put("createDate", getCreateDate());
+		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("name", getName());
 		attributes.put("surname", getSurname());
 		attributes.put("bornDate", getBornDate());
-		attributes.put("address", getAddress());
+		attributes.put("addressId", getAddressId());
 
 		return attributes;
 	}
@@ -64,6 +71,42 @@ public class StudentWrapper
 
 		if (studentId != null) {
 			setStudentId(studentId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
+		}
+
+		Long userId = (Long)attributes.get("userId");
+
+		if (userId != null) {
+			setUserId(userId);
+		}
+
+		String userName = (String)attributes.get("userName");
+
+		if (userName != null) {
+			setUserName(userName);
+		}
+
+		Date createDate = (Date)attributes.get("createDate");
+
+		if (createDate != null) {
+			setCreateDate(createDate);
+		}
+
+		Date modifiedDate = (Date)attributes.get("modifiedDate");
+
+		if (modifiedDate != null) {
+			setModifiedDate(modifiedDate);
 		}
 
 		String name = (String)attributes.get("name");
@@ -84,10 +127,10 @@ public class StudentWrapper
 			setBornDate(bornDate);
 		}
 
-		String address = (String)attributes.get("address");
+		Long addressId = (Long)attributes.get("addressId");
 
-		if (address != null) {
-			setAddress(address);
+		if (addressId != null) {
+			setAddressId(addressId);
 		}
 	}
 
@@ -97,13 +140,13 @@ public class StudentWrapper
 	}
 
 	/**
-	 * Returns the address of this student.
+	 * Returns the address ID of this student.
 	 *
-	 * @return the address of this student
+	 * @return the address ID of this student
 	 */
 	@Override
-	public String getAddress() {
-		return model.getAddress();
+	public long getAddressId() {
+		return model.getAddressId();
 	}
 
 	/**
@@ -114,6 +157,46 @@ public class StudentWrapper
 	@Override
 	public Date getBornDate() {
 		return model.getBornDate();
+	}
+
+	/**
+	 * Returns the company ID of this student.
+	 *
+	 * @return the company ID of this student
+	 */
+	@Override
+	public long getCompanyId() {
+		return model.getCompanyId();
+	}
+
+	/**
+	 * Returns the create date of this student.
+	 *
+	 * @return the create date of this student
+	 */
+	@Override
+	public Date getCreateDate() {
+		return model.getCreateDate();
+	}
+
+	/**
+	 * Returns the group ID of this student.
+	 *
+	 * @return the group ID of this student
+	 */
+	@Override
+	public long getGroupId() {
+		return model.getGroupId();
+	}
+
+	/**
+	 * Returns the modified date of this student.
+	 *
+	 * @return the modified date of this student
+	 */
+	@Override
+	public Date getModifiedDate() {
+		return model.getModifiedDate();
 	}
 
 	/**
@@ -157,6 +240,36 @@ public class StudentWrapper
 	}
 
 	/**
+	 * Returns the user ID of this student.
+	 *
+	 * @return the user ID of this student
+	 */
+	@Override
+	public long getUserId() {
+		return model.getUserId();
+	}
+
+	/**
+	 * Returns the user name of this student.
+	 *
+	 * @return the user name of this student
+	 */
+	@Override
+	public String getUserName() {
+		return model.getUserName();
+	}
+
+	/**
+	 * Returns the user uuid of this student.
+	 *
+	 * @return the user uuid of this student
+	 */
+	@Override
+	public String getUserUuid() {
+		return model.getUserUuid();
+	}
+
+	/**
 	 * Returns the uuid of this student.
 	 *
 	 * @return the uuid of this student
@@ -172,13 +285,13 @@ public class StudentWrapper
 	}
 
 	/**
-	 * Sets the address of this student.
+	 * Sets the address ID of this student.
 	 *
-	 * @param address the address of this student
+	 * @param addressId the address ID of this student
 	 */
 	@Override
-	public void setAddress(String address) {
-		model.setAddress(address);
+	public void setAddressId(long addressId) {
+		model.setAddressId(addressId);
 	}
 
 	/**
@@ -189,6 +302,46 @@ public class StudentWrapper
 	@Override
 	public void setBornDate(Date bornDate) {
 		model.setBornDate(bornDate);
+	}
+
+	/**
+	 * Sets the company ID of this student.
+	 *
+	 * @param companyId the company ID of this student
+	 */
+	@Override
+	public void setCompanyId(long companyId) {
+		model.setCompanyId(companyId);
+	}
+
+	/**
+	 * Sets the create date of this student.
+	 *
+	 * @param createDate the create date of this student
+	 */
+	@Override
+	public void setCreateDate(Date createDate) {
+		model.setCreateDate(createDate);
+	}
+
+	/**
+	 * Sets the group ID of this student.
+	 *
+	 * @param groupId the group ID of this student
+	 */
+	@Override
+	public void setGroupId(long groupId) {
+		model.setGroupId(groupId);
+	}
+
+	/**
+	 * Sets the modified date of this student.
+	 *
+	 * @param modifiedDate the modified date of this student
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		model.setModifiedDate(modifiedDate);
 	}
 
 	/**
@@ -232,6 +385,36 @@ public class StudentWrapper
 	}
 
 	/**
+	 * Sets the user ID of this student.
+	 *
+	 * @param userId the user ID of this student
+	 */
+	@Override
+	public void setUserId(long userId) {
+		model.setUserId(userId);
+	}
+
+	/**
+	 * Sets the user name of this student.
+	 *
+	 * @param userName the user name of this student
+	 */
+	@Override
+	public void setUserName(String userName) {
+		model.setUserName(userName);
+	}
+
+	/**
+	 * Sets the user uuid of this student.
+	 *
+	 * @param userUuid the user uuid of this student
+	 */
+	@Override
+	public void setUserUuid(String userUuid) {
+		model.setUserUuid(userUuid);
+	}
+
+	/**
 	 * Sets the uuid of this student.
 	 *
 	 * @param uuid the uuid of this student
@@ -239,6 +422,11 @@ public class StudentWrapper
 	@Override
 	public void setUuid(String uuid) {
 		model.setUuid(uuid);
+	}
+
+	@Override
+	public StagedModelType getStagedModelType() {
+		return model.getStagedModelType();
 	}
 
 	@Override

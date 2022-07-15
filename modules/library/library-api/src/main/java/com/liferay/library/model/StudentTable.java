@@ -36,14 +36,26 @@ public class StudentTable extends BaseTable<StudentTable> {
 		"uuid_", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<StudentTable, Long> studentId = createColumn(
 		"studentId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
+	public final Column<StudentTable, Long> groupId = createColumn(
+		"groupId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<StudentTable, Long> companyId = createColumn(
+		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<StudentTable, Long> userId = createColumn(
+		"userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<StudentTable, String> userName = createColumn(
+		"userName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<StudentTable, Date> createDate = createColumn(
+		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
+	public final Column<StudentTable, Date> modifiedDate = createColumn(
+		"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<StudentTable, String> name = createColumn(
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<StudentTable, String> surname = createColumn(
 		"surname", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<StudentTable, Date> bornDate = createColumn(
 		"bornDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
-	public final Column<StudentTable, String> address = createColumn(
-		"address", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<StudentTable, Long> addressId = createColumn(
+		"addressId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 
 	private StudentTable() {
 		super("LB_Student", StudentTable::new);

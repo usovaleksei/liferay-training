@@ -14,10 +14,12 @@
 
 package com.liferay.library.service;
 
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.library.model.Book;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -199,6 +201,16 @@ public interface BookLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Book fetchBook(long bookId);
 
+	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book, or <code>null</code> if a matching book could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Book fetchBookByUuidAndGroupId(String uuid, long groupId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -211,6 +223,18 @@ public interface BookLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Book getBook(long bookId) throws PortalException;
+
+	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book
+	 * @throws PortalException if a matching book could not be found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Book getBookByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException;
 
 	/**
 	 * Returns a range of all the books.
@@ -227,12 +251,41 @@ public interface BookLocalService
 	public List<Book> getBooks(int start, int end);
 
 	/**
+	 * Returns all the books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @return the matching books, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Book> getBooksByUuidAndCompanyId(String uuid, long companyId);
+
+	/**
+	 * Returns a range of books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of books
+	 * @param end the upper bound of the range of books (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching books, or an empty list if no matches were found
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Book> getBooksByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Book> orderByComparator);
+
+	/**
 	 * Returns the number of books.
 	 *
 	 * @return the number of books
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getBooksCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();

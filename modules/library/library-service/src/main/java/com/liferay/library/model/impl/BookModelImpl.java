@@ -16,15 +16,21 @@ package com.liferay.library.model.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.library.model.Book;
 import com.liferay.library.model.BookModel;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -68,8 +74,11 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"uuid_", Types.VARCHAR}, {"bookId", Types.BIGINT},
+		{"groupId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"authorId", Types.BIGINT}, {"bookTitle", Types.VARCHAR},
-		{"createDate", Types.TIMESTAMP}, {"genreId", Types.BIGINT},
+		{"publishingYear", Types.TIMESTAMP}, {"genreId", Types.BIGINT},
 		{"studentId", Types.BIGINT}
 	};
 
@@ -79,15 +88,21 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 	static {
 		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("bookId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("authorId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("bookTitle", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("publishingYear", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("genreId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("studentId", Types.BIGINT);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LB_Book (uuid_ VARCHAR(75) null,bookId LONG not null primary key,authorId LONG,bookTitle VARCHAR(75) null,createDate DATE null,genreId LONG,studentId LONG)";
+		"create table LB_Book (uuid_ VARCHAR(75) null,bookId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,authorId LONG,bookTitle VARCHAR(75) null,publishingYear DATE null,genreId LONG,studentId LONG)";
 
 	public static final String TABLE_SQL_DROP = "drop table LB_Book";
 
@@ -111,7 +126,19 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -251,15 +278,33 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 		attributeGetterFunctions.put("bookId", Book::getBookId);
 		attributeSetterBiConsumers.put(
 			"bookId", (BiConsumer<Book, Long>)Book::setBookId);
+		attributeGetterFunctions.put("groupId", Book::getGroupId);
+		attributeSetterBiConsumers.put(
+			"groupId", (BiConsumer<Book, Long>)Book::setGroupId);
+		attributeGetterFunctions.put("companyId", Book::getCompanyId);
+		attributeSetterBiConsumers.put(
+			"companyId", (BiConsumer<Book, Long>)Book::setCompanyId);
+		attributeGetterFunctions.put("userId", Book::getUserId);
+		attributeSetterBiConsumers.put(
+			"userId", (BiConsumer<Book, Long>)Book::setUserId);
+		attributeGetterFunctions.put("userName", Book::getUserName);
+		attributeSetterBiConsumers.put(
+			"userName", (BiConsumer<Book, String>)Book::setUserName);
+		attributeGetterFunctions.put("createDate", Book::getCreateDate);
+		attributeSetterBiConsumers.put(
+			"createDate", (BiConsumer<Book, Date>)Book::setCreateDate);
+		attributeGetterFunctions.put("modifiedDate", Book::getModifiedDate);
+		attributeSetterBiConsumers.put(
+			"modifiedDate", (BiConsumer<Book, Date>)Book::setModifiedDate);
 		attributeGetterFunctions.put("authorId", Book::getAuthorId);
 		attributeSetterBiConsumers.put(
 			"authorId", (BiConsumer<Book, Long>)Book::setAuthorId);
 		attributeGetterFunctions.put("bookTitle", Book::getBookTitle);
 		attributeSetterBiConsumers.put(
 			"bookTitle", (BiConsumer<Book, String>)Book::setBookTitle);
-		attributeGetterFunctions.put("createDate", Book::getCreateDate);
+		attributeGetterFunctions.put("publishingYear", Book::getPublishingYear);
 		attributeSetterBiConsumers.put(
-			"createDate", (BiConsumer<Book, Date>)Book::setCreateDate);
+			"publishingYear", (BiConsumer<Book, Date>)Book::setPublishingYear);
 		attributeGetterFunctions.put("genreId", Book::getGenreId);
 		attributeSetterBiConsumers.put(
 			"genreId", (BiConsumer<Book, Long>)Book::setGenreId);
@@ -319,6 +364,142 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 	@JSON
 	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_groupId = groupId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalGroupId() {
+		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_companyId = companyId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalCompanyId() {
+		return GetterUtil.getLong(
+			this.<Long>getColumnOriginalValue("companyId"));
+	}
+
+	@JSON
+	@Override
+	public long getUserId() {
+		return _userId;
+	}
+
+	@Override
+	public void setUserId(long userId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_userId = userId;
+	}
+
+	@Override
+	public String getUserUuid() {
+		try {
+			User user = UserLocalServiceUtil.getUserById(getUserId());
+
+			return user.getUuid();
+		}
+		catch (PortalException portalException) {
+			return "";
+		}
+	}
+
+	@Override
+	public void setUserUuid(String userUuid) {
+	}
+
+	@JSON
+	@Override
+	public String getUserName() {
+		if (_userName == null) {
+			return "";
+		}
+		else {
+			return _userName;
+		}
+	}
+
+	@Override
+	public void setUserName(String userName) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_userName = userName;
+	}
+
+	@JSON
+	@Override
+	public Date getCreateDate() {
+		return _createDate;
+	}
+
+	@Override
+	public void setCreateDate(Date createDate) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_createDate = createDate;
+	}
+
+	@JSON
+	@Override
+	public Date getModifiedDate() {
+		return _modifiedDate;
+	}
+
+	public boolean hasSetModifiedDate() {
+		return _setModifiedDate;
+	}
+
+	@Override
+	public void setModifiedDate(Date modifiedDate) {
+		_setModifiedDate = true;
+
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_modifiedDate = modifiedDate;
+	}
+
+	@JSON
+	@Override
 	public long getAuthorId() {
 		return _authorId;
 	}
@@ -363,17 +544,17 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 	@JSON
 	@Override
-	public Date getCreateDate() {
-		return _createDate;
+	public Date getPublishingYear() {
+		return _publishingYear;
 	}
 
 	@Override
-	public void setCreateDate(Date createDate) {
+	public void setPublishingYear(Date publishingYear) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
 
-		_createDate = createDate;
+		_publishingYear = publishingYear;
 	}
 
 	@JSON
@@ -406,6 +587,12 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 		_studentId = studentId;
 	}
 
+	@Override
+	public StagedModelType getStagedModelType() {
+		return new StagedModelType(
+			PortalUtil.getClassNameId(Book.class.getName()));
+	}
+
 	public long getColumnBitmask() {
 		if (_columnBitmask > 0) {
 			return _columnBitmask;
@@ -433,7 +620,7 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return ExpandoBridgeFactoryUtil.getExpandoBridge(
-			0, Book.class.getName(), getPrimaryKey());
+			getCompanyId(), Book.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -464,9 +651,15 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 		bookImpl.setUuid(getUuid());
 		bookImpl.setBookId(getBookId());
+		bookImpl.setGroupId(getGroupId());
+		bookImpl.setCompanyId(getCompanyId());
+		bookImpl.setUserId(getUserId());
+		bookImpl.setUserName(getUserName());
+		bookImpl.setCreateDate(getCreateDate());
+		bookImpl.setModifiedDate(getModifiedDate());
 		bookImpl.setAuthorId(getAuthorId());
 		bookImpl.setBookTitle(getBookTitle());
-		bookImpl.setCreateDate(getCreateDate());
+		bookImpl.setPublishingYear(getPublishingYear());
 		bookImpl.setGenreId(getGenreId());
 		bookImpl.setStudentId(getStudentId());
 
@@ -481,9 +674,17 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 		bookImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
 		bookImpl.setBookId(this.<Long>getColumnOriginalValue("bookId"));
+		bookImpl.setGroupId(this.<Long>getColumnOriginalValue("groupId"));
+		bookImpl.setCompanyId(this.<Long>getColumnOriginalValue("companyId"));
+		bookImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
+		bookImpl.setUserName(this.<String>getColumnOriginalValue("userName"));
+		bookImpl.setCreateDate(this.<Date>getColumnOriginalValue("createDate"));
+		bookImpl.setModifiedDate(
+			this.<Date>getColumnOriginalValue("modifiedDate"));
 		bookImpl.setAuthorId(this.<Long>getColumnOriginalValue("authorId"));
 		bookImpl.setBookTitle(this.<String>getColumnOriginalValue("bookTitle"));
-		bookImpl.setCreateDate(this.<Date>getColumnOriginalValue("createDate"));
+		bookImpl.setPublishingYear(
+			this.<Date>getColumnOriginalValue("publishingYear"));
 		bookImpl.setGenreId(this.<Long>getColumnOriginalValue("genreId"));
 		bookImpl.setStudentId(this.<Long>getColumnOriginalValue("studentId"));
 
@@ -552,6 +753,8 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 	public void resetOriginalValues() {
 		_columnOriginalValues = Collections.emptyMap();
 
+		_setModifiedDate = false;
+
 		_columnBitmask = 0;
 	}
 
@@ -569,6 +772,38 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 		bookCacheModel.bookId = getBookId();
 
+		bookCacheModel.groupId = getGroupId();
+
+		bookCacheModel.companyId = getCompanyId();
+
+		bookCacheModel.userId = getUserId();
+
+		bookCacheModel.userName = getUserName();
+
+		String userName = bookCacheModel.userName;
+
+		if ((userName != null) && (userName.length() == 0)) {
+			bookCacheModel.userName = null;
+		}
+
+		Date createDate = getCreateDate();
+
+		if (createDate != null) {
+			bookCacheModel.createDate = createDate.getTime();
+		}
+		else {
+			bookCacheModel.createDate = Long.MIN_VALUE;
+		}
+
+		Date modifiedDate = getModifiedDate();
+
+		if (modifiedDate != null) {
+			bookCacheModel.modifiedDate = modifiedDate.getTime();
+		}
+		else {
+			bookCacheModel.modifiedDate = Long.MIN_VALUE;
+		}
+
 		bookCacheModel.authorId = getAuthorId();
 
 		bookCacheModel.bookTitle = getBookTitle();
@@ -579,13 +814,13 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 			bookCacheModel.bookTitle = null;
 		}
 
-		Date createDate = getCreateDate();
+		Date publishingYear = getPublishingYear();
 
-		if (createDate != null) {
-			bookCacheModel.createDate = createDate.getTime();
+		if (publishingYear != null) {
+			bookCacheModel.publishingYear = publishingYear.getTime();
 		}
 		else {
-			bookCacheModel.createDate = Long.MIN_VALUE;
+			bookCacheModel.publishingYear = Long.MIN_VALUE;
 		}
 
 		bookCacheModel.genreId = getGenreId();
@@ -682,9 +917,16 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 	private String _uuid;
 	private long _bookId;
+	private long _groupId;
+	private long _companyId;
+	private long _userId;
+	private String _userName;
+	private Date _createDate;
+	private Date _modifiedDate;
+	private boolean _setModifiedDate;
 	private long _authorId;
 	private String _bookTitle;
-	private Date _createDate;
+	private Date _publishingYear;
 	private long _genreId;
 	private long _studentId;
 
@@ -719,9 +961,15 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 		_columnOriginalValues.put("uuid_", _uuid);
 		_columnOriginalValues.put("bookId", _bookId);
+		_columnOriginalValues.put("groupId", _groupId);
+		_columnOriginalValues.put("companyId", _companyId);
+		_columnOriginalValues.put("userId", _userId);
+		_columnOriginalValues.put("userName", _userName);
+		_columnOriginalValues.put("createDate", _createDate);
+		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("authorId", _authorId);
 		_columnOriginalValues.put("bookTitle", _bookTitle);
-		_columnOriginalValues.put("createDate", _createDate);
+		_columnOriginalValues.put("publishingYear", _publishingYear);
 		_columnOriginalValues.put("genreId", _genreId);
 		_columnOriginalValues.put("studentId", _studentId);
 	}
@@ -751,15 +999,27 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 		columnBitmasks.put("bookId", 2L);
 
-		columnBitmasks.put("authorId", 4L);
+		columnBitmasks.put("groupId", 4L);
 
-		columnBitmasks.put("bookTitle", 8L);
+		columnBitmasks.put("companyId", 8L);
 
-		columnBitmasks.put("createDate", 16L);
+		columnBitmasks.put("userId", 16L);
 
-		columnBitmasks.put("genreId", 32L);
+		columnBitmasks.put("userName", 32L);
 
-		columnBitmasks.put("studentId", 64L);
+		columnBitmasks.put("createDate", 64L);
+
+		columnBitmasks.put("modifiedDate", 128L);
+
+		columnBitmasks.put("authorId", 256L);
+
+		columnBitmasks.put("bookTitle", 512L);
+
+		columnBitmasks.put("publishingYear", 1024L);
+
+		columnBitmasks.put("genreId", 2048L);
+
+		columnBitmasks.put("studentId", 4096L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

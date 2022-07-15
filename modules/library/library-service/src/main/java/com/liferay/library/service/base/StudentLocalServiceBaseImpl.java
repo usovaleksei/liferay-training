@@ -14,9 +14,15 @@
 
 package com.liferay.library.service.base;
 
+import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.library.model.Student;
 import com.liferay.library.service.StudentLocalService;
 import com.liferay.library.service.StudentLocalServiceUtil;
+import com.liferay.library.service.persistence.AddressPersistence;
 import com.liferay.library.service.persistence.BookPersistence;
 import com.liferay.library.service.persistence.GenrePersistence;
 import com.liferay.library.service.persistence.StudentPersistence;
@@ -30,6 +36,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -245,6 +252,18 @@ public abstract class StudentLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the student matching the UUID and group.
+	 *
+	 * @param uuid the student's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching student, or <code>null</code> if a matching student could not be found
+	 */
+	@Override
+	public Student fetchStudentByUuidAndGroupId(String uuid, long groupId) {
+		return studentPersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
 	 * Returns the student with the primary key.
 	 *
 	 * @param studentId the primary key of the student
@@ -297,6 +316,72 @@ public abstract class StudentLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("studentId");
 	}
 
+	@Override
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		final PortletDataContext portletDataContext) {
+
+		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+			new ExportActionableDynamicQuery() {
+
+				@Override
+				public long performCount() throws PortalException {
+					ManifestSummary manifestSummary =
+						portletDataContext.getManifestSummary();
+
+					StagedModelType stagedModelType = getStagedModelType();
+
+					long modelAdditionCount = super.performCount();
+
+					manifestSummary.addModelAdditionCount(
+						stagedModelType, modelAdditionCount);
+
+					long modelDeletionCount =
+						ExportImportHelperUtil.getModelDeletionCount(
+							portletDataContext, stagedModelType);
+
+					manifestSummary.addModelDeletionCount(
+						stagedModelType, modelDeletionCount);
+
+					return modelAdditionCount;
+				}
+
+			};
+
+		initActionableDynamicQuery(exportActionableDynamicQuery);
+
+		exportActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
+
+				@Override
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					portletDataContext.addDateRangeCriteria(
+						dynamicQuery, "modifiedDate");
+				}
+
+			});
+
+		exportActionableDynamicQuery.setCompanyId(
+			portletDataContext.getCompanyId());
+
+		exportActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Student>() {
+
+				@Override
+				public void performAction(Student student)
+					throws PortalException {
+
+					StagedModelDataHandlerUtil.exportStagedModel(
+						portletDataContext, student);
+				}
+
+			});
+		exportActionableDynamicQuery.setStagedModelType(
+			new StagedModelType(
+				PortalUtil.getClassNameId(Student.class.getName())));
+
+		return exportActionableDynamicQuery;
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -330,6 +415,54 @@ public abstract class StudentLocalServiceBaseImpl
 		throws PortalException {
 
 		return studentPersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns all the students matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the students
+	 * @param companyId the primary key of the company
+	 * @return the matching students, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Student> getStudentsByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return studentPersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of students matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the students
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of students
+	 * @param end the upper bound of the range of students (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching students, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Student> getStudentsByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Student> orderByComparator) {
+
+		return studentPersistence.findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the student matching the UUID and group.
+	 *
+	 * @param uuid the student's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching student
+	 * @throws PortalException if a matching student could not be found
+	 */
+	@Override
+	public Student getStudentByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return studentPersistence.findByUUID_G(uuid, groupId);
 	}
 
 	/**
@@ -451,6 +584,9 @@ public abstract class StudentLocalServiceBaseImpl
 			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
+
+	@Reference
+	protected AddressPersistence addressPersistence;
 
 	@Reference
 	protected BookPersistence bookPersistence;

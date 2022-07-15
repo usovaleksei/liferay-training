@@ -16,6 +16,11 @@ package com.liferay.library.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.StagedAuditedModel;
+
+import java.util.Date;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -31,7 +36,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface GenreModel extends BaseModel<Genre> {
+public interface GenreModel
+	extends BaseModel<Genre>, GroupedModel, ShardedModel, StagedAuditedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -59,6 +65,7 @@ public interface GenreModel extends BaseModel<Genre> {
 	 * @return the uuid of this genre
 	 */
 	@AutoEscape
+	@Override
 	public String getUuid();
 
 	/**
@@ -66,6 +73,7 @@ public interface GenreModel extends BaseModel<Genre> {
 	 *
 	 * @param uuid the uuid of this genre
 	 */
+	@Override
 	public void setUuid(String uuid);
 
 	/**
@@ -81,6 +89,119 @@ public interface GenreModel extends BaseModel<Genre> {
 	 * @param genreId the genre ID of this genre
 	 */
 	public void setGenreId(long genreId);
+
+	/**
+	 * Returns the group ID of this genre.
+	 *
+	 * @return the group ID of this genre
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this genre.
+	 *
+	 * @param groupId the group ID of this genre
+	 */
+	@Override
+	public void setGroupId(long groupId);
+
+	/**
+	 * Returns the company ID of this genre.
+	 *
+	 * @return the company ID of this genre
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this genre.
+	 *
+	 * @param companyId the company ID of this genre
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
+	 * Returns the user ID of this genre.
+	 *
+	 * @return the user ID of this genre
+	 */
+	@Override
+	public long getUserId();
+
+	/**
+	 * Sets the user ID of this genre.
+	 *
+	 * @param userId the user ID of this genre
+	 */
+	@Override
+	public void setUserId(long userId);
+
+	/**
+	 * Returns the user uuid of this genre.
+	 *
+	 * @return the user uuid of this genre
+	 */
+	@Override
+	public String getUserUuid();
+
+	/**
+	 * Sets the user uuid of this genre.
+	 *
+	 * @param userUuid the user uuid of this genre
+	 */
+	@Override
+	public void setUserUuid(String userUuid);
+
+	/**
+	 * Returns the user name of this genre.
+	 *
+	 * @return the user name of this genre
+	 */
+	@AutoEscape
+	@Override
+	public String getUserName();
+
+	/**
+	 * Sets the user name of this genre.
+	 *
+	 * @param userName the user name of this genre
+	 */
+	@Override
+	public void setUserName(String userName);
+
+	/**
+	 * Returns the create date of this genre.
+	 *
+	 * @return the create date of this genre
+	 */
+	@Override
+	public Date getCreateDate();
+
+	/**
+	 * Sets the create date of this genre.
+	 *
+	 * @param createDate the create date of this genre
+	 */
+	@Override
+	public void setCreateDate(Date createDate);
+
+	/**
+	 * Returns the modified date of this genre.
+	 *
+	 * @return the modified date of this genre
+	 */
+	@Override
+	public Date getModifiedDate();
+
+	/**
+	 * Sets the modified date of this genre.
+	 *
+	 * @param modifiedDate the modified date of this genre
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate);
 
 	/**
 	 * Returns the title of this genre.

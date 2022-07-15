@@ -207,6 +207,17 @@ public class BookLocalServiceUtil {
 		return getService().fetchBook(bookId);
 	}
 
+	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book, or <code>null</code> if a matching book could not be found
+	 */
+	public static Book fetchBookByUuidAndGroupId(String uuid, long groupId) {
+		return getService().fetchBookByUuidAndGroupId(uuid, groupId);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -225,6 +236,20 @@ public class BookLocalServiceUtil {
 	}
 
 	/**
+	 * Returns the book matching the UUID and group.
+	 *
+	 * @param uuid the book's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching book
+	 * @throws PortalException if a matching book could not be found
+	 */
+	public static Book getBookByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return getService().getBookByUuidAndGroupId(uuid, groupId);
+	}
+
+	/**
 	 * Returns a range of all the books.
 	 *
 	 * <p>
@@ -240,12 +265,51 @@ public class BookLocalServiceUtil {
 	}
 
 	/**
+	 * Returns all the books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @return the matching books, or an empty list if no matches were found
+	 */
+	public static List<Book> getBooksByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return getService().getBooksByUuidAndCompanyId(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of books matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the books
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of books
+	 * @param end the upper bound of the range of books (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching books, or an empty list if no matches were found
+	 */
+	public static List<Book> getBooksByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Book> orderByComparator) {
+
+		return getService().getBooksByUuidAndCompanyId(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
 	 * Returns the number of books.
 	 *
 	 * @return the number of books
 	 */
 	public static int getBooksCount() {
 		return getService().getBooksCount();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
+		getExportActionableDynamicQuery(
+			com.liferay.exportimport.kernel.lar.PortletDataContext
+				portletDataContext) {
+
+		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	public static

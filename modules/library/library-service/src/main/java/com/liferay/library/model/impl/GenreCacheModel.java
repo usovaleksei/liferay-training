@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import java.util.Date;
+
 /**
  * The cache model class for representing Genre in entity cache.
  *
@@ -58,12 +60,24 @@ public class GenreCacheModel implements CacheModel<Genre>, Externalizable {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
 		sb.append(", genreId=");
 		sb.append(genreId);
+		sb.append(", groupId=");
+		sb.append(groupId);
+		sb.append(", companyId=");
+		sb.append(companyId);
+		sb.append(", userId=");
+		sb.append(userId);
+		sb.append(", userName=");
+		sb.append(userName);
+		sb.append(", createDate=");
+		sb.append(createDate);
+		sb.append(", modifiedDate=");
+		sb.append(modifiedDate);
 		sb.append(", title=");
 		sb.append(title);
 		sb.append("}");
@@ -83,6 +97,30 @@ public class GenreCacheModel implements CacheModel<Genre>, Externalizable {
 		}
 
 		genreImpl.setGenreId(genreId);
+		genreImpl.setGroupId(groupId);
+		genreImpl.setCompanyId(companyId);
+		genreImpl.setUserId(userId);
+
+		if (userName == null) {
+			genreImpl.setUserName("");
+		}
+		else {
+			genreImpl.setUserName(userName);
+		}
+
+		if (createDate == Long.MIN_VALUE) {
+			genreImpl.setCreateDate(null);
+		}
+		else {
+			genreImpl.setCreateDate(new Date(createDate));
+		}
+
+		if (modifiedDate == Long.MIN_VALUE) {
+			genreImpl.setModifiedDate(null);
+		}
+		else {
+			genreImpl.setModifiedDate(new Date(modifiedDate));
+		}
 
 		if (title == null) {
 			genreImpl.setTitle("");
@@ -101,6 +139,15 @@ public class GenreCacheModel implements CacheModel<Genre>, Externalizable {
 		uuid = objectInput.readUTF();
 
 		genreId = objectInput.readLong();
+
+		groupId = objectInput.readLong();
+
+		companyId = objectInput.readLong();
+
+		userId = objectInput.readLong();
+		userName = objectInput.readUTF();
+		createDate = objectInput.readLong();
+		modifiedDate = objectInput.readLong();
 		title = objectInput.readUTF();
 	}
 
@@ -115,6 +162,22 @@ public class GenreCacheModel implements CacheModel<Genre>, Externalizable {
 
 		objectOutput.writeLong(genreId);
 
+		objectOutput.writeLong(groupId);
+
+		objectOutput.writeLong(companyId);
+
+		objectOutput.writeLong(userId);
+
+		if (userName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(userName);
+		}
+
+		objectOutput.writeLong(createDate);
+		objectOutput.writeLong(modifiedDate);
+
 		if (title == null) {
 			objectOutput.writeUTF("");
 		}
@@ -125,6 +188,12 @@ public class GenreCacheModel implements CacheModel<Genre>, Externalizable {
 
 	public String uuid;
 	public long genreId;
+	public long groupId;
+	public long companyId;
+	public long userId;
+	public String userName;
+	public long createDate;
+	public long modifiedDate;
 	public String title;
 
 }

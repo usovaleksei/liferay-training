@@ -14,9 +14,15 @@
 
 package com.liferay.library.service.base;
 
+import com.liferay.exportimport.kernel.lar.ExportImportHelperUtil;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
+import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.library.model.Genre;
 import com.liferay.library.service.GenreLocalService;
 import com.liferay.library.service.GenreLocalServiceUtil;
+import com.liferay.library.service.persistence.AddressPersistence;
 import com.liferay.library.service.persistence.BookPersistence;
 import com.liferay.library.service.persistence.GenrePersistence;
 import com.liferay.library.service.persistence.StudentPersistence;
@@ -30,6 +36,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -243,6 +250,18 @@ public abstract class GenreLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre, or <code>null</code> if a matching genre could not be found
+	 */
+	@Override
+	public Genre fetchGenreByUuidAndGroupId(String uuid, long groupId) {
+		return genrePersistence.fetchByUUID_G(uuid, groupId);
+	}
+
+	/**
 	 * Returns the genre with the primary key.
 	 *
 	 * @param genreId the primary key of the genre
@@ -294,6 +313,70 @@ public abstract class GenreLocalServiceBaseImpl
 		actionableDynamicQuery.setPrimaryKeyPropertyName("genreId");
 	}
 
+	@Override
+	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
+		final PortletDataContext portletDataContext) {
+
+		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+			new ExportActionableDynamicQuery() {
+
+				@Override
+				public long performCount() throws PortalException {
+					ManifestSummary manifestSummary =
+						portletDataContext.getManifestSummary();
+
+					StagedModelType stagedModelType = getStagedModelType();
+
+					long modelAdditionCount = super.performCount();
+
+					manifestSummary.addModelAdditionCount(
+						stagedModelType, modelAdditionCount);
+
+					long modelDeletionCount =
+						ExportImportHelperUtil.getModelDeletionCount(
+							portletDataContext, stagedModelType);
+
+					manifestSummary.addModelDeletionCount(
+						stagedModelType, modelDeletionCount);
+
+					return modelAdditionCount;
+				}
+
+			};
+
+		initActionableDynamicQuery(exportActionableDynamicQuery);
+
+		exportActionableDynamicQuery.setAddCriteriaMethod(
+			new ActionableDynamicQuery.AddCriteriaMethod() {
+
+				@Override
+				public void addCriteria(DynamicQuery dynamicQuery) {
+					portletDataContext.addDateRangeCriteria(
+						dynamicQuery, "modifiedDate");
+				}
+
+			});
+
+		exportActionableDynamicQuery.setCompanyId(
+			portletDataContext.getCompanyId());
+
+		exportActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<Genre>() {
+
+				@Override
+				public void performAction(Genre genre) throws PortalException {
+					StagedModelDataHandlerUtil.exportStagedModel(
+						portletDataContext, genre);
+				}
+
+			});
+		exportActionableDynamicQuery.setStagedModelType(
+			new StagedModelType(
+				PortalUtil.getClassNameId(Genre.class.getName())));
+
+		return exportActionableDynamicQuery;
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -327,6 +410,54 @@ public abstract class GenreLocalServiceBaseImpl
 		throws PortalException {
 
 		return genrePersistence.findByPrimaryKey(primaryKeyObj);
+	}
+
+	/**
+	 * Returns all the genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @return the matching genres, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Genre> getGenresByUuidAndCompanyId(
+		String uuid, long companyId) {
+
+		return genrePersistence.findByUuid_C(uuid, companyId);
+	}
+
+	/**
+	 * Returns a range of genres matching the UUID and company.
+	 *
+	 * @param uuid the UUID of the genres
+	 * @param companyId the primary key of the company
+	 * @param start the lower bound of the range of genres
+	 * @param end the upper bound of the range of genres (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the range of matching genres, or an empty list if no matches were found
+	 */
+	@Override
+	public List<Genre> getGenresByUuidAndCompanyId(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Genre> orderByComparator) {
+
+		return genrePersistence.findByUuid_C(
+			uuid, companyId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the genre matching the UUID and group.
+	 *
+	 * @param uuid the genre's UUID
+	 * @param groupId the primary key of the group
+	 * @return the matching genre
+	 * @throws PortalException if a matching genre could not be found
+	 */
+	@Override
+	public Genre getGenreByUuidAndGroupId(String uuid, long groupId)
+		throws PortalException {
+
+		return genrePersistence.findByUUID_G(uuid, groupId);
 	}
 
 	/**
@@ -448,6 +579,9 @@ public abstract class GenreLocalServiceBaseImpl
 			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
+
+	@Reference
+	protected AddressPersistence addressPersistence;
 
 	@Reference
 	protected BookPersistence bookPersistence;

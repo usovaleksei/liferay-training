@@ -19,6 +19,8 @@ import com.liferay.petra.sql.dsl.base.BaseTable;
 
 import java.sql.Types;
 
+import java.util.Date;
+
 /**
  * The table class for the &quot;LB_Genre&quot; database table.
  *
@@ -34,6 +36,18 @@ public class GenreTable extends BaseTable<GenreTable> {
 		"uuid_", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<GenreTable, Long> genreId = createColumn(
 		"genreId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
+	public final Column<GenreTable, Long> groupId = createColumn(
+		"groupId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<GenreTable, Long> companyId = createColumn(
+		"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<GenreTable, Long> userId = createColumn(
+		"userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<GenreTable, String> userName = createColumn(
+		"userName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<GenreTable, Date> createDate = createColumn(
+		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
+	public final Column<GenreTable, Date> modifiedDate = createColumn(
+		"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<GenreTable, String> title = createColumn(
 		"title", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 

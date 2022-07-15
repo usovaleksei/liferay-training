@@ -16,6 +16,9 @@ package com.liferay.library.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.GroupedModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.model.StagedAuditedModel;
 
 import java.util.Date;
 
@@ -33,7 +36,8 @@ import org.osgi.annotation.versioning.ProviderType;
  * @generated
  */
 @ProviderType
-public interface StudentModel extends BaseModel<Student> {
+public interface StudentModel
+	extends BaseModel<Student>, GroupedModel, ShardedModel, StagedAuditedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -61,6 +65,7 @@ public interface StudentModel extends BaseModel<Student> {
 	 * @return the uuid of this student
 	 */
 	@AutoEscape
+	@Override
 	public String getUuid();
 
 	/**
@@ -68,6 +73,7 @@ public interface StudentModel extends BaseModel<Student> {
 	 *
 	 * @param uuid the uuid of this student
 	 */
+	@Override
 	public void setUuid(String uuid);
 
 	/**
@@ -83,6 +89,119 @@ public interface StudentModel extends BaseModel<Student> {
 	 * @param studentId the student ID of this student
 	 */
 	public void setStudentId(long studentId);
+
+	/**
+	 * Returns the group ID of this student.
+	 *
+	 * @return the group ID of this student
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this student.
+	 *
+	 * @param groupId the group ID of this student
+	 */
+	@Override
+	public void setGroupId(long groupId);
+
+	/**
+	 * Returns the company ID of this student.
+	 *
+	 * @return the company ID of this student
+	 */
+	@Override
+	public long getCompanyId();
+
+	/**
+	 * Sets the company ID of this student.
+	 *
+	 * @param companyId the company ID of this student
+	 */
+	@Override
+	public void setCompanyId(long companyId);
+
+	/**
+	 * Returns the user ID of this student.
+	 *
+	 * @return the user ID of this student
+	 */
+	@Override
+	public long getUserId();
+
+	/**
+	 * Sets the user ID of this student.
+	 *
+	 * @param userId the user ID of this student
+	 */
+	@Override
+	public void setUserId(long userId);
+
+	/**
+	 * Returns the user uuid of this student.
+	 *
+	 * @return the user uuid of this student
+	 */
+	@Override
+	public String getUserUuid();
+
+	/**
+	 * Sets the user uuid of this student.
+	 *
+	 * @param userUuid the user uuid of this student
+	 */
+	@Override
+	public void setUserUuid(String userUuid);
+
+	/**
+	 * Returns the user name of this student.
+	 *
+	 * @return the user name of this student
+	 */
+	@AutoEscape
+	@Override
+	public String getUserName();
+
+	/**
+	 * Sets the user name of this student.
+	 *
+	 * @param userName the user name of this student
+	 */
+	@Override
+	public void setUserName(String userName);
+
+	/**
+	 * Returns the create date of this student.
+	 *
+	 * @return the create date of this student
+	 */
+	@Override
+	public Date getCreateDate();
+
+	/**
+	 * Sets the create date of this student.
+	 *
+	 * @param createDate the create date of this student
+	 */
+	@Override
+	public void setCreateDate(Date createDate);
+
+	/**
+	 * Returns the modified date of this student.
+	 *
+	 * @return the modified date of this student
+	 */
+	@Override
+	public Date getModifiedDate();
+
+	/**
+	 * Sets the modified date of this student.
+	 *
+	 * @param modifiedDate the modified date of this student
+	 */
+	@Override
+	public void setModifiedDate(Date modifiedDate);
 
 	/**
 	 * Returns the name of this student.
@@ -129,19 +248,18 @@ public interface StudentModel extends BaseModel<Student> {
 	public void setBornDate(Date bornDate);
 
 	/**
-	 * Returns the address of this student.
+	 * Returns the address ID of this student.
 	 *
-	 * @return the address of this student
+	 * @return the address ID of this student
 	 */
-	@AutoEscape
-	public String getAddress();
+	public long getAddressId();
 
 	/**
-	 * Sets the address of this student.
+	 * Sets the address ID of this student.
 	 *
-	 * @param address the address of this student
+	 * @param addressId the address ID of this student
 	 */
-	public void setAddress(String address);
+	public void setAddressId(long addressId);
 
 	@Override
 	public Student cloneWithOriginalValues();
