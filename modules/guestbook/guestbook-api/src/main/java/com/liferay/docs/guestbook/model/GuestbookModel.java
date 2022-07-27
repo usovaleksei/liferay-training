@@ -365,4 +365,7 @@ public interface GuestbookModel
 	@Override
 	public boolean isScheduled();
 
+	@Override
+	public Guestbook cloneWithOriginalValues();
+
 }

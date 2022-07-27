@@ -161,6 +161,11 @@ public class EntryWrapper
 		}
 	}
 
+	@Override
+	public Entry cloneWithOriginalValues() {
+		return wrap(model.cloneWithOriginalValues());
+	}
+
 	/**
 	 * Returns the company ID of this entry.
 	 *

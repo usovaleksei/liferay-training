@@ -26,6 +26,10 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 public class EntryLocalServiceWrapper
 	implements EntryLocalService, ServiceWrapper<EntryLocalService> {
 
+	public EntryLocalServiceWrapper() {
+		this(null);
+	}
+
 	public EntryLocalServiceWrapper(EntryLocalService entryLocalService) {
 		_entryLocalService = entryLocalService;
 	}
@@ -67,6 +71,17 @@ public class EntryLocalServiceWrapper
 	@Override
 	public com.liferay.docs.guestbook.model.Entry createEntry(long entryId) {
 		return _entryLocalService.createEntry(entryId);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _entryLocalService.createPersistedModel(primaryKeyObj);
 	}
 
 	/**

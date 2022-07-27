@@ -78,6 +78,16 @@ public class GuestbookLocalServiceUtil {
 	}
 
 	/**
+	 * @throws PortalException
+	 */
+	public static PersistedModel createPersistedModel(
+			Serializable primaryKeyObj)
+		throws PortalException {
+
+		return getService().createPersistedModel(primaryKeyObj);
+	}
+
+	/**
 	 * Deletes the guestbook from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>

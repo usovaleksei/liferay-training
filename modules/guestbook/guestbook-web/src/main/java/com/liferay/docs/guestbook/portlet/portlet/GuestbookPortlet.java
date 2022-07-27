@@ -1,8 +1,8 @@
 package com.liferay.docs.guestbook.portlet.portlet;
 
+import com.liferay.docs.guestbook.model.Entry;
 import com.liferay.docs.guestbook.model.Guestbook;
 import com.liferay.docs.guestbook.portlet.constants.GuestbookPortletKeys;
-import com.liferay.docs.guestbook.model.Entry;
 import com.liferay.docs.guestbook.service.EntryLocalService;
 import com.liferay.docs.guestbook.service.GuestbookLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -18,8 +18,6 @@ import org.osgi.service.component.annotations.Reference;
 
 import javax.portlet.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

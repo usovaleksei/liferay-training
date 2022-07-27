@@ -38,7 +38,6 @@ package com.liferay.docs.guestbook.service.http;
  * </p>
  *
  * @author liferay
- * @see EntryServiceSoap
  * @generated
  */
 public class EntryServiceHttp {

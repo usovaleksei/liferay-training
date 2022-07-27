@@ -20,6 +20,7 @@ import com.liferay.docs.guestbook.exception.EntryNameException;
 import com.liferay.docs.guestbook.model.Entry;
 import com.liferay.docs.guestbook.service.base.EntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
@@ -145,15 +146,5 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 		if (Validator.isNull(entry)) {
 			throw new EntryMessageException();
 		}
-	}
-
-	@Override
-	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
-		return null;
-	}
-
-	@Override
-	public int dslQueryCount(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
-		return 0;
 	}
 }

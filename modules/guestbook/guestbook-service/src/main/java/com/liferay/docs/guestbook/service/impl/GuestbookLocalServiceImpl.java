@@ -17,8 +17,8 @@ package com.liferay.docs.guestbook.service.impl;
 import com.liferay.docs.guestbook.exception.GuestbookNameException;
 import com.liferay.docs.guestbook.model.Guestbook;
 import com.liferay.docs.guestbook.service.base.GuestbookLocalServiceBaseImpl;
-import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.aop.AopService;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -95,15 +95,5 @@ public class GuestbookLocalServiceImpl extends GuestbookLocalServiceBaseImpl {
 		if (Validator.isNull(name)) {
 			throw new GuestbookNameException();
 		}
-	}
-
-	@Override
-	public <T> T dslQuery(DSLQuery dslQuery) {
-		return null;
-	}
-
-	@Override
-	public int dslQueryCount(DSLQuery dslQuery) {
-		return 0;
 	}
 }

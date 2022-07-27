@@ -409,4 +409,7 @@ public interface EntryModel
 	@Override
 	public boolean isScheduled();
 
+	@Override
+	public Entry cloneWithOriginalValues();
+
 }

@@ -141,6 +141,11 @@ public class GuestbookWrapper
 		}
 	}
 
+	@Override
+	public Guestbook cloneWithOriginalValues() {
+		return wrap(model.cloneWithOriginalValues());
+	}
+
 	/**
 	 * Returns the company ID of this guestbook.
 	 *

@@ -26,6 +26,10 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 public class GuestbookLocalServiceWrapper
 	implements GuestbookLocalService, ServiceWrapper<GuestbookLocalService> {
 
+	public GuestbookLocalServiceWrapper() {
+		this(null);
+	}
+
 	public GuestbookLocalServiceWrapper(
 		GuestbookLocalService guestbookLocalService) {
 
@@ -70,6 +74,17 @@ public class GuestbookLocalServiceWrapper
 		long guestbookId) {
 
 		return _guestbookLocalService.createGuestbook(guestbookId);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel createPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _guestbookLocalService.createPersistedModel(primaryKeyObj);
 	}
 
 	/**

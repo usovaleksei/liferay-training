@@ -16,6 +16,7 @@ package com.liferay.docs.guestbook.service;
 
 import com.liferay.docs.guestbook.model.Entry;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -92,6 +93,12 @@ public interface EntryLocalService
 	public Entry createEntry(long entryId);
 
 	/**
+	 * @throws PortalException
+	 */
+	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	 * Deletes the entry from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
@@ -129,10 +136,10 @@ public interface EntryLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery);
+	public <T> T dslQuery(DSLQuery dslQuery);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int dslQueryCount(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery);
+	public int dslQueryCount(DSLQuery dslQuery);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();

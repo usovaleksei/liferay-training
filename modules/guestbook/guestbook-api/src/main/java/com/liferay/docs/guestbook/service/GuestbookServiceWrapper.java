@@ -26,6 +26,10 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 public class GuestbookServiceWrapper
 	implements GuestbookService, ServiceWrapper<GuestbookService> {
 
+	public GuestbookServiceWrapper() {
+		this(null);
+	}
+
 	public GuestbookServiceWrapper(GuestbookService guestbookService) {
 		_guestbookService = guestbookService;
 	}
