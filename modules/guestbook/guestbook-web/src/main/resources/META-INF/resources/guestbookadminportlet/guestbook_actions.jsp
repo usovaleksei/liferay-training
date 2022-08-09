@@ -28,4 +28,17 @@
 
     <liferay-ui:icon-delete url="<%=deleteURL.toString() %>" />
 
+    <c:if
+            test="<%=GuestbookModelPermission.contains(permissionChecker, guestbook.getGuestbookId(), ActionKeys.PERMISSIONS) %>">
+
+        <liferay-security:permissionsURL
+                modelResource="<%= Guestbook.class.getName() %>"
+                modelResourceDescription="<%= guestbook.getName() %>"
+                resourcePrimKey="<%= String.valueOf(guestbook.getGuestbookId()) %>"
+                var="permissionsURL" />
+
+        <liferay-ui:icon image="permissions" url="<%= permissionsURL %>" />
+
+    </c:if>
+
 </liferay-ui:icon-menu>
